@@ -1,5 +1,7 @@
 <script>
 import axiosInstance from "../../utils";
+import store from "@/store/index.js";
+import router from "../../router";
 
 export default {
   data() {
@@ -10,18 +12,19 @@ export default {
   },
 
   methods: {
-    login() {
-      console.log(this.password,this.email)
-      axiosInstance.post('/auth/login', {
+    async login() {
+      console.log(store.state.user.token, 'post')
+      const res = await axiosInstance.post('/auth/login', {
         email: this.email,
         password: this.password
       })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      store.state.user.data = res.data.user
+      store.state.user.token = res.data.access_token
+      console.log(store.state.user.token, 'after')
+
+      if (res.status == 200) {
+        router.push('/')
+      }
     }
   },
 
