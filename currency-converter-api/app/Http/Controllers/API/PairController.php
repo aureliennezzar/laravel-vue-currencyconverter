@@ -18,8 +18,8 @@ class PairController extends Controller
     {
         $pairs = Pair::all();
         foreach ($pairs as $pair) {
-            $pair["primary_currency"] = Currency::where("id",$pair["primary_currency"])->get();
-            $pair["secondary_currency"] = Currency::where("id",$pair["secondary_currency"])->get();
+            $pair["primary_currency"] = Currency::where("id", $pair["primary_currency"])->get();
+            $pair["secondary_currency"] = Currency::where("id", $pair["secondary_currency"])->get();
         }
         return response()->json($pairs);
     }
@@ -50,8 +50,8 @@ class PairController extends Controller
         $pair[0]->reversed = $reversed;
         $pair[0]->result = $result;
         return response()->json([
-            "from" => Currency::where('name',$from)->get(),
-            "to" => Currency::where('name',$to)->get(),
+            "from" => Currency::where('name', $from)->get(),
+            "to" => Currency::where('name', $to)->get(),
             "rate" => $rate,
             "result" => $result
         ]);
@@ -76,47 +76,58 @@ class PairController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rate' => 'required|max:200',
+        ]);
+
+        $newPair = new Pair([
+            'primary_currency' => $request->get('primary_currency'),
+            'secondary_currency' => $request->get('secondary_currency'),
+            'rate' => $request->get('rate'),
+        ]);
+
+        $newPair->save();
+        return response()->json($newPair);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Pair $pair
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Pair $pair)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Pair $pair
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pair $pair)
-    {
-        //
+        $pair = Pair::findOrFail($id);
+        return response()->json($pair);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Pair $pair
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pair $pair)
+    public function update(Request $request, $id)
     {
-        //
+        $pair = Pair::findOrFail($id);
+
+        $request->validate([
+            'rate' => 'required|max:200',
+        ]);
+
+        $pair->primary_currency = $request->get('primary_currency');
+        $pair->secondary_currency = $request->get('secondary_currency');
+        $pair->rate = $request->get('rate');
+        $pair->save();
+        return response()->json($pair);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
 
