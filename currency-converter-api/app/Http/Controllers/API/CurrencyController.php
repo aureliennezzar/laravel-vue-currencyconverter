@@ -80,16 +80,6 @@ class CurrencyController extends Controller
 
         return response()->json($currency);
     }
-//
-//    api/convert?from=USD&to=EUR&amount=10
-// [EUR,USD]
-// EURUSD -> name
-//WHERE primary_devise equal arr[0] && WHERE secondary_devise equal arr[1]
-//
-
-
-//
-//
 
 
     /**

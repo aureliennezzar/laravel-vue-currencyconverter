@@ -17,6 +17,10 @@ class PairController extends Controller
     public function index()
     {
         $pairs = Pair::all();
+        foreach ($pairs as $pair) {
+            $pair["primary_currency"] = Currency::where("id",$pair["primary_currency"])->get();
+            $pair["secondary_currency"] = Currency::where("id",$pair["secondary_currency"])->get();
+        }
         return response()->json($pairs);
     }
 
@@ -36,10 +40,11 @@ class PairController extends Controller
         $rate = $pair[0]->rate;
         $reversed = false;
         if ($from != $duo[0]) {
-            // Primary -> Secondary
+            // Secondary -> Primary
             $rate = 1 / $rate;
             $reversed = true;
         }
+
         $result = $rate * $amount;
 
         $pair[0]->reversed = $reversed;
@@ -111,11 +116,15 @@ class PairController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Pair $pair
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pair $pair)
+
+    public function destroy($id)
     {
-        //
+        $pair = Pair::findOrFail($id);
+        $pair->delete();
+
+        return response()->json($pair::all());
     }
 }

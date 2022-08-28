@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('currencies', \App\Http\Controllers\API\CurrencyController::class);
-Route::apiResource('pairs', \App\Http\Controllers\API\PairController::class);
+Route::apiResource('pairs', \App\Http\Controllers\API\PairController::class)->middleware('auth:sanctum');
 Route::get('/convert/{from}/{to}/{amount}', \App\Http\Controllers\API\PairController::class . '@convert');
 
 
