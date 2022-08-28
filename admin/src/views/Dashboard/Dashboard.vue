@@ -1,6 +1,7 @@
 <script>
 import axiosInstance from "../../utils";
 import PairDataService from "../../services/PairDataService";
+import router from "../../router";
 
 export default {
   data() {
@@ -23,6 +24,9 @@ export default {
         await PairDataService.delete(id);
         this.pairs = await PairDataService.getAll()
       }
+    },
+    async editPair(id){
+      router.push(`/pairs/edit/${id}`);
     }
   },
 
@@ -44,7 +48,7 @@ export default {
         {{ el.secondary_currency[0].name }}
       </div>
       <button @click="deletePair(el.id)">Supprimer</button>
-      <button>Modifier</button>
+      <button @click="editPair(el.id)">Modifier</button>
     </li>
   </ul>
 </template>

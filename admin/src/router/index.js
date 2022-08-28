@@ -19,6 +19,12 @@ const routes = [
         component: () => import("../components/crud/AddPair.vue"),
         meta: {requiresAuth: true}
     },
+    {
+        name: "EditPair",
+        path: "/pairs/edit/:id",
+        component: () => import("../components/crud/EditPair.vue"),
+        meta: {requiresAuth: true}
+    },
 
 ];
 
