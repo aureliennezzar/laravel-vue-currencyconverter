@@ -37,11 +37,12 @@ class DatabaseSeeder extends Seeder
                     return strcmp($a['name'], $b['name']);
                 });
                 if(in_array($duo[0]['id'].$duo[1]['id'], $pairs)) continue;
+
                 $pairs[] = $duo[0]['id'].$duo[1]['id'];
                 $pair = new Pair();
                 $pair->rate = mt_rand() / mt_getrandmax();;
-                $pair->primary_currency = $duo[0]['id'];
-                $pair->secondary_currency = $duo[1]['id'];
+                $pair->primary_currency = $duo[0]['name'];
+                $pair->secondary_currency = $duo[1]['name'];
                 $pair->save();
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Conversion;
 use App\Models\Currency;
 use App\Models\Pair;
 use Illuminate\Http\Request;
@@ -18,8 +19,8 @@ class PairController extends Controller
     {
         $pairs = Pair::all();
         foreach ($pairs as $pair) {
-            $pair["primary_currency"] = Currency::where("id", $pair["primary_currency"])->get();
-            $pair["secondary_currency"] = Currency::where("id", $pair["secondary_currency"])->get();
+            $pair["primary_currency"] = Currency::where("name", $pair["primary_currency"])->get();
+            $pair["secondary_currency"] = Currency::where("name", $pair["secondary_currency"])->get();
         }
         return response()->json($pairs);
     }
@@ -37,6 +38,10 @@ class PairController extends Controller
             return strcmp($a, $b);
         });
         $pair = Pair::where('primary_currency', $duo[0])->where('secondary_currency', $duo[1])->get();
+        $conversion = new Conversion([
+            "pair" => $pair[0]->id,
+        ]);
+        $conversion->save();
         $rate = $pair[0]->rate;
         $reversed = false;
         if ($from != $duo[0]) {
@@ -57,16 +62,6 @@ class PairController extends Controller
         ]);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
