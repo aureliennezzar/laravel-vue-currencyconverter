@@ -1,5 +1,6 @@
 <script>
 import axiosInstance from "../../utils";
+import PairDataService from "../../services/PairDataService";
 
 export default {
   data() {
@@ -16,19 +17,34 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    async deletePair(id){
+      if(confirm('Voulez-vous craiment supprimer cette conversion ?')){
+        await PairDataService.delete(id);
+        this.pairs = await PairDataService.getAll()
+      }
     }
   },
 
   async created() {
-    this.pairs = await this.fetchData();
+    this.pairs = await PairDataService.getAll()
   }
 }
 </script>
+<style scoped>
 
+</style>
 <template>
-  <div v-for="(el,i) in pairs" :key="i">
-    <p v-for="(value, key, i) in el" :key="1">
-      {{ key }} : {{ value }}
-    </p>
-  </div>
+  <router-link to="/pairs/add" class="nav-link">Ajouter</router-link>
+
+  <ul v-for="(el,i) in pairs" :key="i">
+    <li>
+      <div>
+        {{ el.primary_currency[0].name }}
+        {{ el.secondary_currency[0].name }}
+      </div>
+      <button @click="deletePair(el.id)">Supprimer</button>
+      <button>Modifier</button>
+    </li>
+  </ul>
 </template>

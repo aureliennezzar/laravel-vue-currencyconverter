@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <router-view/>
+  AJOUTER UNE PAIRE
 </template>

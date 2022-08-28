@@ -13,6 +13,12 @@ const routes = [
         component: () => import('../views/Dashboard/Dashboard.vue'),
         meta: {requiresAuth: true}
     },
+    {
+        name: "AddPair",
+        path: "/pairs/add",
+        component: () => import("../components/crud/AddPair.vue"),
+        meta: {requiresAuth: true}
+    },
 
 ];
 
