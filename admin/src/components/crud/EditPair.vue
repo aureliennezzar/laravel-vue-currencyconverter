@@ -22,7 +22,6 @@ export default {
         let {primary_currency, secondary_currency, rate,id} = this
         await PairDataService.update(id,{primary_currency, secondary_currency, rate});
         router.push('/')
-        //
       }
     }
   },
@@ -30,7 +29,8 @@ export default {
   async created() {
     this.currencies = await CurrencyDataService.getAll()
     const pair = await PairDataService.get(this.$route.params.id);
-    let {id, primary_currency, secondary_currency, rate} = pair
+
+    let {id, primary_currency, secondary_currency, rate} = pair;
     this.id = id
     this.primary_currency = primary_currency
     this.secondary_currency = secondary_currency

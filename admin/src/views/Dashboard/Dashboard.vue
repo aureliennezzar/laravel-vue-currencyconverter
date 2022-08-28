@@ -31,6 +31,7 @@ export default {
   },
 
   async created() {
+    console.log(await PairDataService.getAll())
     this.pairs = await PairDataService.getAll()
   }
 }
