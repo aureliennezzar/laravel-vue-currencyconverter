@@ -13,14 +13,12 @@ export default {
 
   methods: {
     async login() {
-      console.log(store.state.user.token, 'post')
       const res = await axiosInstance.post('/auth/login', {
         email: this.email,
         password: this.password
       })
       store.state.user.data = res.data.user
       store.state.user.token = res.data.access_token
-      console.log(store.state.user.token, 'after')
 
       if (res.status == 200) {
         router.push('/')
