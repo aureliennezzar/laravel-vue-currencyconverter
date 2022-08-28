@@ -19,13 +19,13 @@ export default {
         console.log(err)
       }
     },
-    async deletePair(id){
-      if(confirm('Voulez-vous craiment supprimer cette conversion ?')){
+    async deletePair(id) {
+      if (confirm('Voulez-vous craiment supprimer cette conversion ?')) {
         await PairDataService.delete(id);
         this.pairs = await PairDataService.getAll()
       }
     },
-    async editPair(id){
+    async editPair(id) {
       router.push(`/pairs/edit/${id}`);
     }
   },
@@ -40,16 +40,53 @@ export default {
 
 </style>
 <template>
-  <router-link to="/pairs/add" class="nav-link">Ajouter</router-link>
 
-  <ul v-for="(el,i) in pairs" :key="i">
-    <li>
-      <div>
-        {{ el.primary_currency[0].name }}
-        {{ el.secondary_currency[0].name }}
-      </div>
-      <button @click="deletePair(el.id)">Supprimer</button>
-      <button @click="editPair(el.id)">Modifier</button>
-    </li>
-  </ul>
+
+  <main>
+
+    <h1>Dashboard</h1>
+    <div class="main__content">
+      <router-link to="/pairs/add" class="nav-link">Ajouter une conversion</router-link>
+
+      <ul>
+        <li v-for="(el,i) in pairs" :key="i">
+          <div>
+            {{ el.primary_currency[0].name }} / {{ el.secondary_currency[0].name }}
+          </div>
+          <div>Nb conversions : {{ el.nb_conversions }}</div>
+          <a @click="deletePair(el.id)">Supprimer</a>
+          <a @click="editPair(el.id)">Modifier</a>
+        </li>
+      </ul>
+    </div>
+  </main>
 </template>
+
+<style scoped>
+.main__content{
+  display: flex;
+  flex-direction: column;
+}
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  display: flex;
+}
+ul li a{
+  cursor: pointer;
+}
+
+ul li div{
+  margin-right: 15px;
+}
+</style>
